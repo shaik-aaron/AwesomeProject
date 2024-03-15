@@ -30,7 +30,10 @@ const Comments = ({route}) => {
                     key={index}
                     onPress={() => {
                       setSelectedImages(prev => [...prev, image.image]);
-                      setComment(prev => prev.slice(0, -1));
+                      setComment(prev => {
+                        let temp = [...prev].filter(letter => letter !== '#');
+                        return temp.join('');
+                      });
                     }}>
                     <Text style={{color: 'blue'}}>{`#${image.tag}`}</Text>
                   </Pressable>
