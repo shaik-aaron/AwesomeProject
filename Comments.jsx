@@ -23,10 +23,11 @@ const Comments = ({route}) => {
       <View>
         {comment.includes('#') ? (
           <View style={styles.imagesTagsContainer}>
-            {route.params.map(image => {
+            {route.params.map((image, index) => {
               if (!selectedImages.includes(image.image)) {
                 return (
                   <Pressable
+                    key={index}
                     onPress={() => {
                       setSelectedImages(prev => [...prev, image.image]);
                       setComment(prev => prev.slice(0, -1));
@@ -50,8 +51,15 @@ const Comments = ({route}) => {
         </View>
         {selectedImages.length > 0 && (
           <View style={styles.imagesContainer}>
-            {selectedImages.map(image => {
-              return <Image height={70} width={70} source={{uri: image}} />;
+            {selectedImages.map((image, index) => {
+              return (
+                <Image
+                  key={index}
+                  height={70}
+                  width={70}
+                  source={{uri: image}}
+                />
+              );
             })}
           </View>
         )}

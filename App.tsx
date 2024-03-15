@@ -17,7 +17,7 @@ const App: FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Card" component={Card} />
+        <Stack.Screen name="Cards" component={Card} />
         <Stack.Screen name="Comments" component={Comments} />
       </Stack.Navigator>
     </NavigationContainer>
