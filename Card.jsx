@@ -1,5 +1,6 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
+  Button,
   Dimensions,
   Image,
   Pressable,
@@ -8,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import storage from './storage';
 
 const Card = ({navigation}) => {
   const [cards, setCards] = useState([]);
@@ -17,11 +19,10 @@ const Card = ({navigation}) => {
     let images = [];
     res.assets.map((result, index) => {
       images.push({
-        tag: `image${index}`,
+        tag: `M${index + 1}`,
         image: result.uri,
       });
     });
-    console.log(images);
     setCards(prev => [
       ...prev,
       {
@@ -30,6 +31,30 @@ const Card = ({navigation}) => {
       },
     ]);
   }
+
+  useEffect(() => {
+    storage
+      .load({
+        key: 'Cards',
+        id: 1000,
+      })
+      .then(data => {
+        setCards(data.cards);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    storage.save({
+      key: 'Cards',
+      id: 1000,
+      data: {
+        cards: cards,
+      },
+    });
+  }, [cards]);
 
   return (
     <View style={styles.container}>
@@ -44,6 +69,7 @@ const Card = ({navigation}) => {
               height={100}
               width={100}
             />
+            <Text style={styles.cardHeading}>{`Card${index + 1}`}</Text>
           </Pressable>
         );
       })}
@@ -87,5 +113,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cardHeading: {
+    fontSize: 16,
+    color: 'black',
   },
 });

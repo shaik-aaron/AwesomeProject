@@ -11,12 +11,8 @@ import {
 } from 'react-native';
 
 const Comments = ({route}) => {
-  console.log(route.params);
-
   const [comment, setComment] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
-
-  console.log(comment);
 
   return (
     <View style={styles.container}>
@@ -26,17 +22,33 @@ const Comments = ({route}) => {
             {route.params.map((image, index) => {
               if (!selectedImages.includes(image.image)) {
                 return (
-                  <Pressable
-                    key={index}
-                    onPress={() => {
-                      setSelectedImages(prev => [...prev, image.image]);
-                      setComment(prev => {
-                        let temp = [...prev].filter(letter => letter !== '#');
-                        return temp.join('');
-                      });
-                    }}>
-                    <Text style={{color: 'blue'}}>{`#${image.tag}`}</Text>
-                  </Pressable>
+                  <View key={index}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 12,
+                      }}>
+                      <Image
+                        source={{uri: image.image}}
+                        height={100}
+                        width={100}
+                      />
+                      <Pressable
+                        key={index}
+                        onPress={() => {
+                          setSelectedImages(prev => [...prev, image.image]);
+                          setComment(prev => {
+                            let temp = [...prev].filter(
+                              letter => letter !== '#',
+                            );
+                            return temp.join('');
+                          });
+                        }}>
+                        <Text style={{color: 'blue'}}>{`#${image.tag}`}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
                 );
               }
             })}
